@@ -1,0 +1,74 @@
+const filterArray = (arr) => {
+  let result = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (typeof arr[i] === "number") {
+      if (result.indexOf(arr[i]) == -1) {
+        result.push(arr[i]);
+      }
+    }
+  }
+  return result;
+};
+
+const multiplyBy11 = (str) => {
+  let result = str.substring(str.length - 1);
+  let addToNextDigit = false;
+
+  if (str.length == 1) {
+    return str + str;
+  }
+
+  if (str.length < 3) {
+    let midInteger = (parseInt(str[1]) + parseInt(str[0])).toString();
+
+    if (midInteger < 10) {
+      result = result.concat(midInteger + str[0]);
+    } else {
+      result = result.concat(midInteger[1] + (parseInt(str[0]) + 1).toString());
+    }
+  } else {
+    for (let i = str.length - 1; i > 0; i--) {
+      let sum = parseInt(str[i]) + parseInt(str[i - 1]);
+      if (addToNextDigit) {
+        sum++;
+      }
+      if (sum < 10) {
+        result = result.concat(sum);
+        addToNextDigit = false;
+      } else {
+        sum = sum.toString();
+        result = result.concat(sum[1]);
+        addToNextDigit = true;
+      }
+    }
+
+    if (addToNextDigit) {
+      result += "01";
+    } else {
+      result += str[0];
+    }
+  }
+  let resultArr = result.split("").reverse();
+  return resultArr.join("");
+};
+
+//Question 1
+console.log(filterArray([1, 2, "a", "b"]));
+console.log(filterArray([1, "a", "b", 0, 15]));
+console.log(filterArray([1, 2, "aasf", "1", "123", 123]));
+
+//Question 2
+console.log((11*11) == multiplyBy11("11"))
+console.log((1213200020*11) == multiplyBy11("1213200020"))
+console.log((1217197941*11) == multiplyBy11("1217197941"))
+// The final test returns false due to the rounding of the product and 11
+// but it does give the correct answer
+//console.log((9473745364784876253253263723*11) == multiplyBy11("9473745364784876253253263723"))
+console.log(multiplyBy11("9473745364784876253253263723"));
+
+
+//Question 3
+//Step 1: turn on 2 switches
+//step 2: after some time, turn off one of the on switches
+//step 3: after a bit of time, turn off the switch that is on, and immediately go in the room
+//step 4: the coldest bulb is the switch that was not turned on; the warmest one is the switch that was //        turned off last, and the other one is the switch that was turned off first
